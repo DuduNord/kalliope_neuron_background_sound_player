@@ -4,6 +4,7 @@ import os
 import sys
 import psutil
 import threading
+import random
 from time import sleep
 from kalliope.core.Utils import Utils
 from kalliope.core.NeuronModule import NeuronModule, InvalidParameterException
@@ -26,6 +27,7 @@ class Background_sound_player(NeuronModule):
         self.state = kwargs.get('state', None)
         self.sound_link = kwargs.get('sound_link', None)
         self.sound_name = kwargs.get('sound_name', None)
+        self.random_playing = kwargs.get('random_playing', True)
         self.mplayer_path = kwargs.get('mplayer_path', "/usr/bin/mplayer")
         self.auto_stop_minutes = kwargs.get('auto_stop_minutes', None)
 
@@ -33,6 +35,7 @@ class Background_sound_player(NeuronModule):
         self.kalliope_memory = kwargs.get('kalliope_memory', None)
         # parameters loaded from the order can be save now
         Cortex.save_parameter_from_order_in_memory(self.kalliope_memory)
+        Cortex.save("current_playing_background_sound", "Aucun fond sonore lancé actuellement")
 
         # message dict that will be passed to the neuron template
         self.message = dict()
@@ -48,7 +51,13 @@ class Background_sound_player(NeuronModule):
                 self.stop_last_process()
 
                 # then we can start a new process
-                self.start_new_process(self.sound_link)
+                played = ''
+                if type(self.sound_link) == type(['pouet']) and self.random_playing is True:
+                    played = random.choice(self.sound_link)
+                else:
+                    played = self.sound_link
+
+                self.start_new_process(played)
 
                 # give the current file name played to the neuron template
                 self.message["sound_link"] = self.sound_link
@@ -98,6 +107,9 @@ class Background_sound_player(NeuronModule):
                 raise InvalidParameterException("[Background_sound_player] The sound_link parameter you specified is not a valid playable link")
             if self.sound_name is None:
                 raise InvalidParameterException("[Background_sound_player] You have to specify a sound_name parameter")
+            if self.random_playing not in [True, False]:
+                raise ValueError("[Background_sound_player] random_playing parameter must be True or False if specified")
+
 
         # if wait auto_stop_minutes is set, must be an integer or string convertible to integer
         if self.auto_stop_minutes is not None:
