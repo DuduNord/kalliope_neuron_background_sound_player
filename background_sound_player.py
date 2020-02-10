@@ -28,7 +28,7 @@ class Background_sound_player(NeuronModule):
 
         self.state = kwargs.get('state', None)
         self.sounds = kwargs.get('sounds', None)
-        self.random_playing = kwargs.get('random_playing', True)
+        self.random_select = kwargs.get('random_select', True)
         self.mplayer_path = kwargs.get('mplayer_path', "/usr/bin/mplayer")
         self.auto_stop_minutes = kwargs.get('auto_stop_minutes', None)
         self.currently_playing_sound = None
@@ -54,10 +54,12 @@ class Background_sound_player(NeuronModule):
                 self.stop_last_process()
 
                 # then we can start a new process
-                if self.random_playing is True:
+                if self.random_select is True:
                     self.currently_playing_sound = list(random.choice(self.sounds).items())[0]
                 else:
-                    # a corriger
+                    # Unfinished. Here it will play the first sound but the purpose is to play all the sounds in the order.
+                    # The second step will be having a "random_playing" parameter that will allow you to play
+                    # all the sounds in a random order
                     self.currently_playing_sound = list(self.sounds[0].items())[0]
 
                 self.start_new_process(self.currently_playing_sound[LINK])
@@ -124,8 +126,8 @@ class Background_sound_player(NeuronModule):
                 raise InvalidParameterException("[Background_sound_player] You have to specify a sound parameter")
             if self._check_sounds(self.sounds) is not True:
                 raise InvalidParameterException("[Background_sound_player] A sound parameter you specified in the list is not a valid playable link")
-            if self.random_playing not in [True, False]:
-                raise ValueError("[Background_sound_player] random_playing parameter must be True or False if specified")
+            if self.random_select not in [True, False]:
+                raise ValueError("[Background_sound_player] random_select parameter must be True or False if specified")
 
         # if wait auto_stop_minutes is set, must be an integer or string convertible to integer
         if self.auto_stop_minutes is not None:
