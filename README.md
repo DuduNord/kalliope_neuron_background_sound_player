@@ -85,7 +85,7 @@ At that time it is just a 0.1 version. The full documentation is comming quickly
     - background_sound_player:
         state: "on"
         sounds:
-          - Radio Néo: "http://stream.radioneo.org:8000/;stream/1"
+          - "Radio Néo": "http://stream.radioneo.org:8000/;stream/1"
         say_template:
           - "{{sound_name}} lancée."
 
@@ -103,7 +103,7 @@ At that time it is just a 0.1 version. The full documentation is comming quickly
   neurons:
     - background_sound_player:
         sounds:
-        - RTL: "http://streaming.radio.rtl.fr/rtl-1-48-192"
+        - "RTL": "http://streaming.radio.rtl.fr/rtl-1-48-192"
         say_template:
           - "{{sound_name}} lancée."
 
@@ -122,7 +122,7 @@ At that time it is just a 0.1 version. The full documentation is comming quickly
     - background_sound_player:
         state: "on"
         sounds:
-          - Radio Classique: "http://radioclassique.ice.infomaniak.ch/radioclassique-high.mp3"
+          - "Radio Classique": "http://radioclassique.ice.infomaniak.ch/radioclassique-high.mp3"
         say_template:
           - "{{sound_name}} lancée."
 
@@ -141,7 +141,7 @@ At that time it is just a 0.1 version. The full documentation is comming quickly
     - background_sound_player:
         state: "on"
         sounds:
-          - Radio FIP: "http://direct.fipradio.fr/live/fip-midfi.mp3"
+          - "Radio FIP": "http://direct.fipradio.fr/live/fip-midfi.mp3"
         say_template:
           - "{{sound_name}} lancée."
 
@@ -160,7 +160,7 @@ At that time it is just a 0.1 version. The full documentation is comming quickly
     - background_sound_player:
         state: "on"
         sounds:
-          - Radio Nova: "http://novazz.ice.infomaniak.ch/novazz-128.mp3"
+          - "Radio Nova": "http://novazz.ice.infomaniak.ch/novazz-128.mp3"
         say_template:
           - "{{sound_name}} lancée."
 
@@ -179,7 +179,7 @@ At that time it is just a 0.1 version. The full documentation is comming quickly
     - background_sound_player:
         state: "on"
         sounds:
-          - TSF Jazz: "http://direct.fipradio.fr/live/fip-midfi.mp3"
+          - "TSF Jazz": "http://direct.fipradio.fr/live/fip-midfi.mp3"
         say_template:
           - "Radio {{sound_name}} lancée."
 
@@ -198,7 +198,7 @@ At that time it is just a 0.1 version. The full documentation is comming quickly
     - background_sound_player:
         state: "on"
         sounds:
-          - France Inter: "http://direct.franceinter.fr/live/franceinter-midfi.mp3"
+          - "France Inter": "http://direct.franceinter.fr/live/franceinter-midfi.mp3"
         say_template:
           - "Radio {{sound_name}} lancée."
 
@@ -217,7 +217,7 @@ At that time it is just a 0.1 version. The full documentation is comming quickly
     - background_sound_player:
         state: "on"
         sounds:
-          - France Culture: "http://direct.franceculture.fr/live/franceculture-midfi.mp3"
+          - "France Culture": "http://direct.franceculture.fr/live/franceculture-midfi.mp3"
         say_template:
           - "Radio {{sound_name}} lancée."
 
@@ -236,7 +236,7 @@ At that time it is just a 0.1 version. The full documentation is comming quickly
     - background_sound_player:
         state: "on"
         sounds:
-          - France Musique: "http://direct.francemusique.fr/live/francemusique-midfi.mp3"
+          - "France Musique": "http://direct.francemusique.fr/live/francemusique-midfi.mp3"
         say_template:
           - "Radio {{sound_name}} lancée."
 ```
