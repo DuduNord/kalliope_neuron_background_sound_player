@@ -8,7 +8,7 @@ At that time it is just a 0.1 version. The full documentation is comming quickly
 
 ## Examples Synapses:
 
-# Radio Launcher:
+### Radio Launcher:
 ```yaml
 - name: "wich-radio-is-playing-synapse"
   signals:
@@ -241,7 +241,7 @@ At that time it is just a 0.1 version. The full documentation is comming quickly
           - "Radio {{sound_name}} lancée."
 ```
 
-# Ambient sound launcher:
+### Ambient sound launcher:
 ```yaml
 - name: "wich-ambient-is-playing-synapse"
   signals:
