@@ -14,6 +14,8 @@ logging.basicConfig()
 logger = logging.getLogger("kalliope")
 
 pid_file_path = "pid.txt"
+NAME = 0
+LINK = 1
 
 class Background_sound_player(NeuronModule):
     """
@@ -25,11 +27,11 @@ class Background_sound_player(NeuronModule):
         super(Background_sound_player, self).__init__(**kwargs)
 
         self.state = kwargs.get('state', None)
-        self.sound_link = kwargs.get('sound_link', None)
-        self.sound_name = kwargs.get('sound_name', None)
+        self.sounds = kwargs.get('sounds', None)
         self.random_playing = kwargs.get('random_playing', True)
         self.mplayer_path = kwargs.get('mplayer_path', "/usr/bin/mplayer")
         self.auto_stop_minutes = kwargs.get('auto_stop_minutes', None)
+        self.currently_playing_sound = None
 
         # a dict of parameters the user ask to save in short term memory
         self.kalliope_memory = kwargs.get('kalliope_memory', None)
@@ -39,6 +41,7 @@ class Background_sound_player(NeuronModule):
 
         # message dict that will be passed to the neuron template
         self.message = dict()
+
 
         # check if sent parameters are in good state
         if self._is_parameters_ok():
@@ -51,20 +54,20 @@ class Background_sound_player(NeuronModule):
                 self.stop_last_process()
 
                 # then we can start a new process
-                played = ''
-                if type(self.sound_link) == type(['pouet']) and self.random_playing is True:
-                    played = random.choice(self.sound_link)
+                if self.random_playing is True:
+                    self.currently_playing_sound = list(random.choice(self.sounds).items())[0]
                 else:
-                    played = self.sound_link
+                    # a corriger
+                    self.currently_playing_sound = list(self.sounds[0].items())[0]
 
-                self.start_new_process(played)
+                self.start_new_process(self.currently_playing_sound[LINK])
 
                 # give the current file name played to the neuron template
-                self.message["sound_link"] = self.sound_link
-                self.message["sound_name"] = self.sound_name
+                self.message['sound_name'] = self.currently_playing_sound[NAME]
+                self.message["sound_link"] = self.currently_playing_sound[LINK]
 
                 # we save the sound's name to Kalliope be able to answer if we ask
-                Cortex.save("current_playing_background_sound", self.sound_name)
+                Cortex.save("current_playing_background_sound", self.currently_playing_sound[NAME])
 
                 # run auto stop thread
                 if self.auto_stop_minutes:
@@ -74,7 +77,7 @@ class Background_sound_player(NeuronModule):
             # give the message dict to the neuron template
             self.say(self.message)
 
-    def is_playable_link(self, sound_link):
+    def _is_playable_link(self, link):
         """
         Checks if the link is playable in mplayer.
         Not done yet.
@@ -82,6 +85,22 @@ class Background_sound_player(NeuronModule):
         """
         return True
 
+    def _check_sounds(self, sounds):
+        if (type(sounds) != type([]) or len(sounds) == 0):
+            raise InvalidParameterException("[Background_sound_player] The sounds parameter is not set properly. Please use the representation specified in the documentation.")
+
+        for sound in sounds:
+            sound_name, sound_link = list(sound.items())[0]
+            sound_name, sound_link = str(sound_name), str(sound_link)
+
+            if sound_name == "":
+                raise InvalidParameterException("[Background_sound_player] The name parameter is not set properly. Please set the name as specified in the documentation.")
+            if sound_link == "":
+                raise InvalidParameterException("[Background_sound_player] The link parameter is not set properly. Please set the link as specified in the documentation.")
+            if self._is_playable_link(sound_link) is not True:
+                raise InvalidParameterException("[Background_sound_player] The link " + sound_link + " is not a playble stream.")
+
+        return True
 
     def wait_before_stop(self):
         logger.debug("[Background_sound_player] Wait %s minutes before checking if the thread is alive" % self.auto_stop_minutes)
@@ -101,15 +120,12 @@ class Background_sound_player(NeuronModule):
             raise InvalidParameterException("[Background_sound_player] State must be 'on' or 'off'")
 
         if self.state == "on":
-            if self.sound_link is None:
-                raise InvalidParameterException("[Background_sound_player] You have to specify a sound_link parameter")
-            if self.is_playable_link(self.sound_link) is not True:
-                raise InvalidParameterException("[Background_sound_player] The sound_link parameter you specified is not a valid playable link")
-            if self.sound_name is None:
-                raise InvalidParameterException("[Background_sound_player] You have to specify a sound_name parameter")
+            if self.sounds is None:
+                raise InvalidParameterException("[Background_sound_player] You have to specify a sound parameter")
+            if self._check_sounds(self.sounds) is not True:
+                raise InvalidParameterException("[Background_sound_player] A sound parameter you specified in the list is not a valid playable link")
             if self.random_playing not in [True, False]:
                 raise ValueError("[Background_sound_player] random_playing parameter must be True or False if specified")
-
 
         # if wait auto_stop_minutes is set, must be an integer or string convertible to integer
         if self.auto_stop_minutes is not None:
@@ -187,7 +203,7 @@ class Background_sound_player(NeuronModule):
         else:
             logger.debug("[Background_sound_player] pid is null. Process already stopped")
 
-    def start_new_process(self, radio_url):
+    def start_new_process(self, sound_link):
         """
         Start mplayer process with the given radio_url
         :param radio_url:
@@ -200,7 +216,7 @@ class Background_sound_player(NeuronModule):
         mplayer_command.extend(mplayer_exec_path)
         mplayer_command.extend(mplayer_options)
 
-        mplayer_command.append(radio_url)
+        mplayer_command.append(sound_link)
         logger.debug("[Background_sound_player] Mplayer cmd: %s" % str(mplayer_command))
 
         # run mplayer in background inside a new process
