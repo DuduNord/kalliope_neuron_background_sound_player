@@ -31,6 +31,8 @@ class Background_sound_player(NeuronModule):
         self.random_option = kwargs.get('random_option', "random_select_one")
         self.mplayer_path = kwargs.get('mplayer_path', "/usr/bin/mplayer")
         self.auto_stop_minutes = kwargs.get('auto_stop_minutes', None)
+        self.loop_option = kwargs.get('loop_option', 'no-loop')
+
         self.currently_playing_sound = None
 
         # a dict of parameters the user ask to save in short term memory
@@ -130,6 +132,8 @@ class Background_sound_player(NeuronModule):
                 raise InvalidParameterException("[Background_sound_player] A sound parameter you specified in the list is not a valid playable link")
             if self.random_option not in ["random_select_one", "random_order_play", "no_random"]:
                 raise ValueError("[Background_sound_player] random_option parameter must be \"random_select_one\" OR \"random_order_play\" OR \"no_random\" if specified")
+            if self.loop_option not in ["loop", "no-loop"]:
+                raise ValueError("[Background_sound_player] loop_option parameter must be \"loop\" OR \"no-loop\" if specified")
 
         # if wait auto_stop_minutes is set, must be an integer or string convertible to integer
         if self.auto_stop_minutes is not None:
@@ -215,7 +219,10 @@ class Background_sound_player(NeuronModule):
         :return:
         """
         mplayer_exec_path = [self.mplayer_path]
-        mplayer_options = ['-slave', '-quiet', '-loop', '0', '-af', 'volume=-15']
+#        mplayer_options = ['-slave', '-quiet', '-loop', '0', '-af', 'volume=-15']
+        mplayer_options = ['-slave', '-quiet', '-af', 'volume=-15', '-loop']
+        mplayer_options.append("0" if self.loop_option == "loop" else "1")
+        mplayer_options.extend([self.loop_option])
         mplayer_command = list()
         mplayer_command.extend(mplayer_exec_path)
         mplayer_command.extend(mplayer_options)
