@@ -254,6 +254,15 @@ At that time it is just a 0.1 version. The full documentation is comming quickly
     - say:
         message: "Ambiance {{kalliope_memory['current_playing_background_sound']}}."
 
+- name: "stop-ambient-synapse"
+  signals:
+    - order: "stoppe l'ambiance"
+  neurons:
+    - say:
+        message: "Entendu."
+    - background_sound_player:
+        state: "off"
+
 - name: "launch-random-ambient-synapse"
   signals:
     - order: "mets-nous ambiance au pif"
@@ -272,6 +281,7 @@ At that time it is just a 0.1 version. The full documentation is comming quickly
         - "Bien Monsieur"
     - background_sound_player:
         state: "on"
+        loop_option: "loop"
         sounds:
           - "Oiseaux": "./resources/sounds/ambientSounds/birds.mp3"
           - "Feu de camp": "./resources/sounds/ambientSounds/fireplace.ogg"
@@ -286,15 +296,6 @@ At that time it is just a 0.1 version. The full documentation is comming quickly
           - "Tropical": "./resources/sounds/ambientSounds/tropical-beach.mp3"
           - "Vent": "./resources/sounds/ambientSounds/wind.ogg"
           - "Bateau mouillé": "./resources/sounds/ambientSounds/wood-sailboat.mp3"
-
-- name: "stop-ambient-synapse"
-  signals:
-    - order: "stoppe l'ambiance"
-  neurons:
-    - say:
-        message: "Entendu."
-    - background_sound_player:
-        state: "off"
 
 - name: "launch-ambient-synapse"
   signals:
@@ -374,6 +375,7 @@ At that time it is just a 0.1 version. The full documentation is comming quickly
   neurons:
     - background_sound_player:
         state: "on"
+        loop_option: "loop"
         sounds:
           - "Feu de bois": "./resources/sounds/ambientSounds/fireplace.ogg"
 
@@ -382,6 +384,7 @@ At that time it is just a 0.1 version. The full documentation is comming quickly
   neurons:
     - background_sound_player:
         state: "on"
+        loop_option: "loop"
         sounds:
           - "Forêt": "./resources/sounds/ambientSounds/forest.mp3"
 
@@ -390,6 +393,7 @@ At that time it is just a 0.1 version. The full documentation is comming quickly
   neurons:
     - background_sound_player:
         state: "on"
+        loop_option: "loop"
         sounds:
           - "Pluie": "./resources/sounds/ambientSounds/heavy-rain.ogg"
 
@@ -398,6 +402,7 @@ At that time it is just a 0.1 version. The full documentation is comming quickly
   neurons:
     - background_sound_player:
         state: "on"
+        loop_option: "loop"
         sounds:
           - "Ruisseau": "./resources/sounds/ambientSounds/forest-stream.mp3"
 
@@ -406,6 +411,7 @@ At that time it is just a 0.1 version. The full documentation is comming quickly
   neurons:
     - background_sound_player:
         state: "on"
+        loop_option: "loop"
         sounds:
           - "Montagne": "./resources/sounds/ambientSounds/mountain-stream.mp3"
 
@@ -414,6 +420,7 @@ At that time it is just a 0.1 version. The full documentation is comming quickly
   neurons:
     - background_sound_player:
         state: "on"
+        loop_option: "loop"
         sounds:
           - "Océan": "./resources/sounds/ambientSounds/ocean-waves.mp3"
 
@@ -422,6 +429,7 @@ At that time it is just a 0.1 version. The full documentation is comming quickly
   neurons:
     - background_sound_player:
         state: "on"
+        loop_option: "loop"
         sounds:
           - "Lac": "./resources/sounds/ambientSounds/seaside.mp3"
 
@@ -430,6 +438,7 @@ At that time it is just a 0.1 version. The full documentation is comming quickly
   neurons:
     - background_sound_player:
         state: "on"
+        loop_option: "loop"
         sounds:
           - "Eau": "./resources/sounds/ambientSounds/stream.ogg"
 
@@ -438,6 +447,7 @@ At that time it is just a 0.1 version. The full documentation is comming quickly
   neurons:
     - background_sound_player:
         state: "on"
+        loop_option: "loop"
         sounds:
           - "Orage": "./resources/sounds/ambientSounds/thunderstorm.ogg"
 
@@ -446,6 +456,7 @@ At that time it is just a 0.1 version. The full documentation is comming quickly
   neurons:
     - background_sound_player:
         state: "on"
+        loop_option: "loop"
         sounds:
           - "Tropical": "./resources/sounds/ambientSounds/tropical-beach.mp3"
 
@@ -454,6 +465,7 @@ At that time it is just a 0.1 version. The full documentation is comming quickly
   neurons:
     - background_sound_player:
         state: "on"
+        loop_option: "loop"
         sounds:
           - Vent: "./resources/sounds/ambientSounds/wind.ogg"
 
@@ -462,6 +474,7 @@ At that time it is just a 0.1 version. The full documentation is comming quickly
   neurons:
     - background_sound_player:
         state: "on"
+        loop_option: "loop"
         sounds:
           - "Bateau mouillé": "./resources/sounds/ambientSounds/wood-sailboat.mp3"
 ```
