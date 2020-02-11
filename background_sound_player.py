@@ -44,7 +44,6 @@ class Background_sound_player(NeuronModule):
         # message dict that will be passed to the neuron template
         self.message = dict()
 
-
         # check if sent parameters are in good state
         if self._is_parameters_ok():
             if self.state == "off":
@@ -55,17 +54,17 @@ class Background_sound_player(NeuronModule):
                 # we stop the last process if exist
                 self.stop_last_process()
 
-                # then we can start a new process
+                # pick one sound randomly in all sounds entered
                 if self.random_option == "random_select_one":
                     self.currently_playing_sound = list(random.choice(self.sounds).items())[0]
+                # play all sounds in random order
                 elif self.random_option == "random_order_play":
                     self.currently_playing_sound = list(self.sounds[0].items())[0]
+                # play all sounds the specified order
                 else:
-                    # Unfinished. Here it will play the first sound but the purpose is to play all the sounds in the order.
-                    # The second step will be having a "random_playing" parameter that will allow you to play
-                    # all the sounds in a random order
                     self.currently_playing_sound = list(self.sounds[0].items())[0]
 
+                # then we can start a new process
                 self.start_new_process(self.currently_playing_sound[LINK])
 
                 # give the current file name played to the neuron template
