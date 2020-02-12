@@ -8,6 +8,54 @@ At that time it is just a 0.1 version. The full documentation is comming quickly
 
 ## Examples Synapses:
 
+###
+```yaml
+- name: "wich-music-is-playing-synapse"
+  signals:
+    - order: "musique jouée"
+    - order: "musique maintenant"
+    - order: "musique en ce moment"
+    - order: "musique entend"
+    - order: "musique écoute"
+  neurons:
+    - say:
+        message: "{{kalliope_memory['current_playing_background_sound']}}."
+
+- name: "stop-music-synapse"
+  signals:
+    - order: "coupe la musique"
+    - order: "couper la musique"
+    - order: "stoppe la musique"
+  neurons:
+    - background_sound_player:
+        state: "off"
+
+- name: "launch-zelda-Musique-synapse"
+  signals:
+    - order: "musique de Zelda"
+  neurons:
+    - background_sound_player:
+        state: "on"
+        sounds:
+          - "theme général": "./resources/sounds/Music/Zelda/awakening.mp3"
+        say_template:
+          - "{{sound_name}} lancée."
+
+- name: "launch-zelda-Musique-synapse2"
+  signals:
+    - order: "musique de Zelda"
+  neurons:
+    - background_sound_player:
+        state: "on"
+        random_option: "no_random"
+        sounds:
+          - "theme général": "./resources/sounds/Music/Zelda/awakening.mp3"
+          - "choisir sa partie": "./resources/sounds/Music/Zelda/choose_player.mp3"
+          - "intro": "./resources/sounds/Music/Zelda/intro.mp3"
+        say_template:
+          - "playliste lancée."
+```
+
 ### Radio Launcher:
 ```yaml
 - name: "wich-radio-is-playing-synapse"
