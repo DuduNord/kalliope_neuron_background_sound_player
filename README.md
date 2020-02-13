@@ -1,10 +1,45 @@
 # kalliope_neuron_background_sound_player
-a Kalliope Neuron that launch and stop background sound (ambient, radio, wav files, anything you want). Based on Ambient Neuron and is suppose to manage all "Ambient Neuron" and "Launch Radio Neuron" problematicals in the near future.
 
-## Documentation:
-At that time it is just a 0.1 version. The full documentation is comming quickly wonce we've solve the following features:
+Kalliope Project is available here: https://github.com/kalliope-project
+
+Kalliope's documentation: https://kalliope-project.github.io/
+
+## Synopsis
+
+a Kalliope Neuron that launch and stop background sound (ambient, radio, wav files, anything you want). 
+
+Based on Ambient Neuron available here: https://github.com/kalliope-project/kalliope_neuron_ambient_sound.
+
+At that time it is just a 0.1 version. The following features steel need to be solved:
 - manage the random files launching from a directory --> useful for the ambient feature
-- manage the playlist launching --> be able to launch a list of links instead of only one
+- manage the playlist launching --> be able to launch a list of links and store the name of the song in kalliope_memory once played
+
+## Installation
+
+Install the neuron into your resource directory
+```bash
+kalliope install --git-url https://github.com/SomebodyLikeEveryBody/kalliope_neuron_background_sound_player.git
+```
+
+## Options
+
+| parameter         | required | type   | default          | choices             | comment                                                                     |
+|-------------------|----------|--------|------------------|---------------------|-----------------------------------------------------------------------------|
+| state             | YES      | string |                  | "on", "off"         | Target state of the background sound.                                          |
+| sound        | NO/YES       | array |                  | -"song name": "link name" | Need to be set if the State is "on".  |
+| radio_name        | NO/YES       | string |                  | name you want to give to the played radio | Need to be set if the State is "on".  |
+| mplayer_path      | NO       | string | /usr/bin/mplayer |                     | Path to mplayer binary. By default /usr/bin/mplayer on Debian family system |
+| auto_stop_minutes | NO       | int    |                  | Integer > 1         | Number of minutes before Kalliope stop automatically the background sound   |
+
+## Return Values
+
+| Name             | Description                             | Type   | sample                                                   |
+|------------------|-----------------------------------------|--------|----------------------------------------------------------|
+| radio_url    | The URL of the played radio               | string | 'http://stream.radioneo.org:8000/;stream/1'        |
+| radio_name | The given name of the played radio | string | 'Radio Néo' |
+
+
+
 
 ## Examples Synapses:
 
