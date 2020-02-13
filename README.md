@@ -41,9 +41,12 @@ kalliope install --git-url https://github.com/SomebodyLikeEveryBody/kalliope_neu
 
 
 
-## Examples Synapses:
+## Synapses example
 
-###
+### Launch music stored on the computer
+
+Here is a launchMusicSynapses.yml example:
+
 ```yaml
 - name: "wich-music-is-playing-synapse"
   signals:
@@ -92,6 +95,9 @@ kalliope install --git-url https://github.com/SomebodyLikeEveryBody/kalliope_neu
 ```
 
 ### Radio Launcher:
+
+Here is a launchRadioSynapses.yml example:
+
 ```yaml
 - name: "wich-radio-is-playing-synapse"
   signals:
@@ -325,6 +331,9 @@ kalliope install --git-url https://github.com/SomebodyLikeEveryBody/kalliope_neu
 ```
 
 ### Ambient sound launcher:
+
+Here is a launchAmbientSynapses.yml example:
+
 ```yaml
 - name: "wich-ambient-is-playing-synapse"
   signals:
