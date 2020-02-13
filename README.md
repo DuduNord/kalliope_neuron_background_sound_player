@@ -30,7 +30,7 @@ kalliope install --git-url https://github.com/SomebodyLikeEveryBody/kalliope_neu
 | random_options        | NO       | string | "random-select-one" | "random-select-one", "random-order-play", "no-random" | Let the choice to play the song list: by playing one picked randomly OR play all in a random order OR play all in the listed order.  |
 | mplayer_path      | NO       | string | /usr/bin/mplayer |                     | Path to mplayer binary. By default /usr/bin/mplayer on Debian family system |
 | auto_stop_minutes | NO       | int    |                  | Integer > 1         | Number of minutes before Kalliope stop automatically the background sound   |
-| loop_option | NO       | int    | "no-loop" | "no-loop", "loop"         | If we want the player to play the song in infinite loop. /!\ But beware, if you list multiple sounds in the synapse and specify loop: "no-loop", it will not loop the list but play the list and loop the last sound of the list.. The playlist management feature is clearly not finished yet. |
+| loop_option | NO       | int    | "no-loop" | "no-loop", "loop"         | If we want the player to play the song in infinite loop. /!\ But beware /!\, if you list multiple sounds in the synapse and specify loop: "no-loop", it will not loop the list but play the list and loop the last sound of the list.. The playlist management feature is clearly not finished yet. |
 
 
 ## Return Values
