@@ -26,12 +26,12 @@ class Background_sound_player(NeuronModule):
     def __init__(self, **kwargs):
         super(Background_sound_player, self).__init__(**kwargs)
 
-        self.state = kwargs.get('state', None)
-        self.sounds = kwargs.get('sounds', None)
-        self.random_option = kwargs.get('random_option', "random_select_one")
-        self.mplayer_path = kwargs.get('mplayer_path', "/usr/bin/mplayer")
+        self.state = kwargs.get('state', None)                                  # "on" / "off"
+        self.sounds = kwargs.get('sounds', None)                                # "[{'title1': 'link1'}, {'title2': 'link2'}, ...]"
+        self.random_option = kwargs.get('random_option', "random-select-one")   # "random-order-play" / "random-select-one" / "no-random"
+        self.loop_option = kwargs.get('loop_option', 'no-loop')                 # "loop" / "no-loop"
+        self.mplayer_path = kwargs.get('mplayer_path', "/usr/bin/mplayer")      
         self.auto_stop_minutes = kwargs.get('auto_stop_minutes', None)
-        self.loop_option = kwargs.get('loop_option', 'no-loop')
 
         self.currently_playing_sound = None
 
@@ -55,10 +55,10 @@ class Background_sound_player(NeuronModule):
                 self.stop_last_process()
 
                 # pick one sound randomly in all sounds entered
-                if self.random_option == "random_select_one":
-                    self.currently_playing_sound = list(random.choice(self.sounds).items())[0]
+                if self.random_option == "random-select-one":
+                    self.currently_playing_sound = [random.choice(self.sounds)]
                 # play all sounds in random order
-                elif self.random_option == "random_order_play":
+                elif self.random_option == "random-order-play":
                     random.shuffle(self.sounds)
                     self.currently_playing_sound = self.sounds
                 # play all sounds the specified order
@@ -67,7 +67,6 @@ class Background_sound_player(NeuronModule):
 
                 # then we can start a new process
                 self.start_new_process(self.currently_playing_sound)
-
 
                 # run auto stop thread
                 if self.auto_stop_minutes:
@@ -122,10 +121,12 @@ class Background_sound_player(NeuronModule):
         if self.state == "on":
             if self.sounds is None:
                 raise InvalidParameterException("[Background_sound_player] You have to specify a sound parameter")
+            elif type(self.sounds) != type([]):
+                raise InvalidParameterException("[Background_sound_player] You have to specify the sound parameter as shown in the documentation.")
             if self._check_sounds(self.sounds) is not True:
                 raise InvalidParameterException("[Background_sound_player] A sound parameter you specified in the list is not a valid playable link")
-            if self.random_option not in ["random_select_one", "random_order_play", "no_random"]:
-                raise ValueError("[Background_sound_player] random_option parameter must be \"random_select_one\" OR \"random_order_play\" OR \"no_random\" if specified")
+            if self.random_option not in ["random-select-one", "random-order-play", "no-random"]:
+                raise ValueError("[Background_sound_player] random_option parameter must be \"random-select-one\" OR \"random-order-play\" OR \"no-random\" if specified")
             if self.loop_option not in ["loop", "no-loop"]:
                 raise ValueError("[Background_sound_player] loop_option parameter must be \"loop\" OR \"no-loop\" if specified")
 
@@ -207,35 +208,24 @@ class Background_sound_player(NeuronModule):
 
     def start_new_process(self, sound_arg):
         """
-        Start mplayer process with the given radio_url
-        :param radio_url:
-        :type radio_url: str
+        Start mplayer process with the given sounds to play
+        :param sound_arg:
+        :type sound_arg: list of dicts [{name: link}, {name: link}, {name: link}]
         :return:
         """
         mplayer_exec_path = [self.mplayer_path]
         mplayer_options = ['-slave', '-quiet', '-af', 'volume=-15', '-loop']
         mplayer_options.append("0" if self.loop_option == "loop" else "1")
-        mplayer_options.extend([self.loop_option])
+
         mplayer_command = list()
         mplayer_command.extend(mplayer_exec_path)
         mplayer_command.extend(mplayer_options)
 
-        # if only one sound is passed to the player
-        if (type(sound_arg) == type((4, 2))):
-            mplayer_command.append(sound_arg[LINK])
-            sound_link = sound_arg[LINK]
-            sound_name = sound_arg[NAME]
-
-        # if an array of sounds is passed to the player
-        elif (type(sound_arg) == type([])):
-            for sound in sound_arg:
-                for sound_name, sound_link in sound.items():
-                    mplayer_command.append(sound_link)
-        else:
-            print(sound_arg)
+        for sound in sound_arg:
+            for sound_name, sound_link in sound.items():
+                mplayer_command.append(sound_link)
 
         logger.debug("[Background_sound_player] Mplayer cmd: %s" % str(mplayer_command))
-
         Cortex.save("current_playing_background_sound", sound_name)
 
         # give the current file name played to the neuron template
@@ -249,10 +239,6 @@ class Background_sound_player(NeuronModule):
         # store the pid in a file to be killed later
         self.store_pid(pid)
         logger.debug("[Background_sound_player] Mplayer started, pid: %s" % pid)
-
-
-
-
 
     @staticmethod
     def clean_pid_file():
