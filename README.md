@@ -1,4 +1,4 @@
-# kalliope_neuron_background_sound_player
+# Kalliope neuron background_sound_player
 
 Kalliope Project is available here: https://github.com/kalliope-project
 
