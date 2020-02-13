@@ -27,7 +27,7 @@ kalliope install --git-url https://github.com/SomebodyLikeEveryBody/kalliope_neu
 |-------------------|----------|--------|------------------|---------------------|-----------------------------------------------------------------------------|
 | state             | YES      | string |                  | "on", "off"         | Target state of the background sound.                                          |
 | sound        | NO/YES       | array of dicts |                  | -"song name": "link name" | Need to be set if the State is "on".  |
-| radio_name        | NO/YES       | string |                  | name you want to give to the played radio | Need to be set if the State is "on".  |
+| random_options        | NO       | string | "random-select-one" | "random-select-one", "random-order-play", "no-random" | Let the choice to play the song list: by playing one picked randomly OR play all in a random order OR play all in the listed order.  |
 | mplayer_path      | NO       | string | /usr/bin/mplayer |                     | Path to mplayer binary. By default /usr/bin/mplayer on Debian family system |
 | auto_stop_minutes | NO       | int    |                  | Integer > 1         | Number of minutes before Kalliope stop automatically the background sound   |
 | loop_option | NO       | int    | "no-loop" | "no-loop", "loop"         | If we want the player to play the song in infinite loop. /!\ But beware, if you list multiple sounds in the synapse and specify loop: "no-loop", it will not loop the list but play the list and loop the last sound of the list.. The playlist management feature is clearly not finished yet. |
