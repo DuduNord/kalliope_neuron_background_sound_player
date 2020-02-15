@@ -193,6 +193,7 @@ Here is a launchRadioSynapses.yml example:
     - order: "tu peux lancer RTL"
   neurons:
     - background_sound_player:
+        state: "on"
         sounds:
         - "RTL": "http://streaming.radio.rtl.fr/rtl-1-48-192"
         say_template:
