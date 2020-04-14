@@ -6,19 +6,28 @@ Kalliope's documentation: https://kalliope-project.github.io/
 
 ## Synopsis
 
-a Kalliope Neuron that launch and stop background sound (ambient, radio, wav files, anything you want). 
+a Kalliope Neuron that launch and stop background sound (ambient, radio, wav files, TXT playlist, anything you want). 
 
 Based on Ambient Neuron available here: https://github.com/kalliope-project/kalliope_neuron_ambient_sound.
 
-At that time it is just a 0.1 version. The following features steel need to be solved:
+The neuron can take either songs or TXT playlist (TXT file with one song per line). It can't take other playlist like M3U for the moment. It can't also take a mix of songs and TXT playlist. Only songs OR TXT playlists must be set (it can take many of them). If TXT and songs are set, the neuron will report an error.
+
+If "no-random" is selected : the song list will be played in the specified order. If more than one TXT playlist are specified, the neuron will play only the first playlist and the others will be ignored.
+
+If "random-select-one" is selected : the neuron will select randomly either one file or one TXT playlist. And it will loop it if specified. In case of TXT playlist, the songs in this playlist will be randomly played with the "-shuffle" option.
+
+If "random-order-play" is selected : all the songs will be passed to Mplayer and played randomly with the "-shuffle" option. If more than one TXT playlist is passed to the neuron, only one TXT playlist will be randomly selected and will be played with the "-shuffle" option. 
+
+At that time it is just a 0.2 version. The following features steel need to be solved:
 - manage the random files launching from a directory --> useful for the ambient feature
 - manage the playlist launching --> be able to launch a list of links and store the name of the song in kalliope_memory once played
+- add if possible NEXT/PREVIOUS and volume down commands (used when Kalliope is listening, with the hooks, to reduce the noise environment) 
 
 ## Installation
 
 Install the neuron into your resource directory
 ```bash
-kalliope install --git-url https://github.com/SomebodyLikeEveryBody/kalliope_neuron_background_sound_player.git
+kalliope install --git-url https://github.com/DuduNord/kalliope_neuron_background_sound_player.git
 ```
 
 ## Options
@@ -27,10 +36,11 @@ kalliope install --git-url https://github.com/SomebodyLikeEveryBody/kalliope_neu
 |-------------------|----------|--------|------------------|---------------------|-----------------------------------------------------------------------------|
 | state             | YES      | string |                  | "on", "off"         | Target state of the background sound.                                          |
 | sound        | NO/YES       | array of dicts |                  | -"song name": "link name" | Need to be set if the State is "on".  |
-| random_options        | NO       | string | "random-select-one" | "random-select-one", "random-order-play", "no-random" | Let the choice to play the song list: by playing one picked randomly OR play all in a random order OR play all in the listed order.  |
+| random_option         | NO       | string | "random-select-one" | "random-select-one", "random-order-play", "no-random" | Let the choice to play the song list: by playing one picked randomly OR play all in a random order OR play all in the listed order.  |
 | mplayer_path      | NO       | string | /usr/bin/mplayer |                     | Path to mplayer binary. By default /usr/bin/mplayer on Debian family system |
 | auto_stop_minutes | NO       | int    |                  | Integer > 1         | Number of minutes before Kalliope stop automatically the background sound   |
-| loop_option | NO       | int    | "no-loop" | "no-loop", "loop"         | If we want the player to play the song in infinite loop. /!\ But beware /!\\, if you list multiple sounds in the synapse and specify loop_options: "loop", it will not loop the list but play the list and loop the last sound of the list.. The playlist management feature is clearly not finished yet. |
+| volume | NO       | int    | "-17" if not specified | between -10 and -40 | volume set in Mplayer. If the set nuber is out of this range, the volume will ne set to the min or max value.   |
+| loop_option | NO       | int    | "no-loop" | "no-loop", "loop"         | If we want the player to play the song or playlist in infinite loop. /!\ But beware /!\\, if you list multiple sounds in the synapse and specify loop_options: "loop", it may not loop the list but play the list and loop the last sound of the list (need to be checked). |
 
 
 ## Return Values
